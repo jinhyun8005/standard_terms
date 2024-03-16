@@ -1,10 +1,3 @@
-!pip install streamlit
-!pip install tiktoken
-!pip install loguru
-!pip install os
-!pip install tempfile
-!pip install langchain
-
 import streamlit as st
 import tiktoken
 from loguru import logger
