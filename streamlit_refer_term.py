@@ -25,7 +25,7 @@ def main():
     page_title="표준용어추천검색",
     page_icon=":books:")
 
-    st.title("_차세대 표준용어 추천검색 \n :red[AI/DA Solution Team]_ :books:")
+    st.title("차세대 표준용어 추천검색 \n :red[AI/DA Solution Team] :books:")
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
