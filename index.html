@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-generation standard term recommendation search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Term Recommendation Search</h1>
+        <form id="termForm">
+            <div class="form-group">
+                <label for="logicalName">Logical Name (Term Name):</label>
+                <input type="text" id="logicalName" name="logicalName" required>
+            </div>
+            <div class="form-group">
+                <label for="physicalName">Physical Name (English Abbreviation Name):</label>
+                <input type="text" id="physicalName" name="physicalName" required>
+            </div>
+            <div class="form-group">
+                <label for="explanation">Explanation of Terms:</label>
+                <textarea id="explanation" name="explanation" required></textarea>
+            </div>
+            <button type="button" onclick="searchTerms()">Search</button>
+        </form>
+        <div id="results"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
