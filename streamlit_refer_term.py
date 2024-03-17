@@ -80,7 +80,13 @@ def main():
             chain = st.session_state.conversation
 
             with st.spinner("검색중..."):
-                result = chain({"question": query})
+                # 수정 후:
+                if st.session_state.conversation:
+                    chain = st.session_state.conversation
+                    result = chain({"question": query})
+                else:
+                    st.error("처리 체인이 초기화되지 않았습니다. 파일을 업로드하고 'Process' 버튼을 클릭하세요.")
+
                 with get_openai_callback() as cb:
                     st.session_state.chat_history = result['chat_history']
                 response = result['answer']
