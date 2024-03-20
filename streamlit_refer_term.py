@@ -160,8 +160,8 @@ def get_text_chunks(text):
     메모리 문제를 일으킬 수 있습니다. 적절한 값을 실험을 통해 결정하는 것이 좋습니다.
     """
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=900,
-        chunk_overlap=100,
+        chunk_size=1500,
+        chunk_overlap=300,
         length_function=tiktoken_len
     )
     chunks = text_splitter.split_documents(text)
