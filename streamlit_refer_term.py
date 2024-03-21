@@ -70,33 +70,39 @@ def main():
     history = StreamlitChatMessageHistory(key="chat_messages")
 
     # Chat logic
-    if query := st.chat_input("질문을 입력해주세요."):
-        st.session_state.messages.append({"role": "user", "content": query})
+    user_query = st.chat_input("질문을 입력해주세요.")  # query 변수명을 user_query로 변경하여 명확성 증가
+    if user_query:  # 사용자로부터 입력 받은 경우
+     st.session_state.messages.append({"role": "user", "content": user_query})
 
-        with st.chat_message("user"):
-            st.markdown(query)
+    with st.chat_message("user"):
+        st.markdown(user_query)
 
+    if st.session_state.conversation:  # 대화 체인이 초기화된 경우
         with st.chat_message("assistant"):
-            chain = st.session_state.conversation
-
             with st.spinner("검색중..."):
-                # 수정 후:
-                if st.session_state.conversation:
-                    chain = st.session_state.conversation
-                    result = chain({"question": query})
-                else:
-                    st.error("처리 체인이 초기화되지 않았습니다. 파일을 업로드하고 'Process' 버튼을 클릭하세요.")
-
-                with get_openai_callback() as cb:
-                    st.session_state.chat_history = result['chat_history']
+                result = st.session_state.conversation({"question": user_query})  # user_query 변수 사용
+                st.session_state.chat_history = result['chat_history']
                 response = result['answer']
                 source_documents = result['source_documents']
 
                 st.markdown(response)
                 with st.expander("참고 문서 확인"):
-                    st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
-                    st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
-                    st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
+                    for doc in source_documents[:3]:  # 최대 3개의 문서 정보를 표시
+                        st.markdown(f"- **Source**: {doc.metadata['source']} \n{doc.page_content}")
+
+    else:
+        st.error("처리 체인이 초기화되지 않았습니다. 파일을 업로드하고 'Process' 버튼을 클릭하세요.")
+    
+        with get_openai_callback() as cb:
+                    st.session_state.chat_history = result['chat_history']
+        response = result['answer']
+        source_documents = result['source_documents']
+
+        st.markdown(response)
+        with st.expander("참고 문서 확인"):
+                st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
+                st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
+                st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
                     
 
 
