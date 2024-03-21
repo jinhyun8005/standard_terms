@@ -108,6 +108,18 @@ def tiktoken_len(text):
     tokens = tokenizer.encode(text)
     return len(tokens)
 
+# 사용자 입력 검증 및 대화 상태 관리 로직
+if query:  # 사용자가 질문을 입력한 경우
+    if query not in st.session_state.response_cache:  # 캐시에 없는 새로운 질문인 경우
+        with st.chat_message("assistant"):
+            # 수정된 함수를 사용하여 API 호출
+            result = query_conversation_chain(st.session_state.conversation, query)
+            response = result['answer']
+            # 응답과 참고 문서 표시 로직...
+    else:
+        response = st.session_state.response_cache[query]['answer']
+    # 대화 메시지 추가 로직...
+        
 # 캐싱 메커니즘을 위한 간단한 딕셔너리 캐시
 if "response_cache" not in st.session_state:
     st.session_state.response_cache = {}
@@ -123,18 +135,6 @@ def query_conversation_chain(conversation, query):
     # 응답을 캐시에 저장
     st.session_state.response_cache[query] = result
     return result
-
-# 사용자 입력 검증 및 대화 상태 관리 로직
-if query:  # 사용자가 질문을 입력한 경우
-    if query not in st.session_state.response_cache:  # 캐시에 없는 새로운 질문인 경우
-        with st.chat_message("assistant"):
-            # 수정된 함수를 사용하여 API 호출
-            result = query_conversation_chain(st.session_state.conversation, query)
-            response = result['answer']
-            # 응답과 참고 문서 표시 로직...
-    else:
-        response = st.session_state.response_cache[query]['answer']
-    # 대화 메시지 추가 로직...
 
 def get_text(docs):
 
